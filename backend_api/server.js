@@ -3,6 +3,8 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const MoviesRouter = require('./routes/movies.js');
+const serverError = require('./middleware/ServerError.js');
+const notFound = require('./middleware/notFound.js');
 
 
 // Middleware 
@@ -23,9 +25,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port http://localhost:${PORT}`);
-});
+
 
 
 
@@ -41,14 +41,13 @@ app.use('/api/v1/movies', MoviesRouter);
 
 
 //Middleware for server errors
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Internal Server Error' });
-});
+app.use(serverError);
 
 
 // Middleware for 404 errors
-app.use((req, res, next) => {
-    res.status(404).json({ error: 'Not Found' });
-});
+app.use(notFound);
 
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port http://localhost:${PORT}`);
+});
