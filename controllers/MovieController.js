@@ -61,9 +61,9 @@ function storeReview(req, res) {
 
     console.log(id, name, vote, text, created_at, updated_at);
 
-    const insertSql = 'INSERT INTO reviews (movie_id, name, vote, text, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)'
+    const insertSql = 'INSERT INTO reviews (movie_id, name, vote, text) VALUES (?, ?, ?, ?)'
 
-    const values = [id, name, vote, text, created_at, updated_at]
+    const values = [id, name, vote, text]
 
     connection.query(insertSql, values, (err, results) => {
         if (err) return res.status(500).json({ error: err.message })
