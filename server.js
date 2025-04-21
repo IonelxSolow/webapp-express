@@ -40,6 +40,26 @@ app.use('/api/v1/movies', MoviesRouter);
 
 
 
+// Authentication routes
+app.post('/register', (req, res)=>{
+
+    //get the data from the body
+    const data = req.body;
+    console.log(data);
+
+    res.json(data, 'Registering ...')
+})
+
+app.post('/login', (req, res) => {
+
+    //get the data from the body
+    const data = req.body;
+    console.log(data, 'Logging in ...');
+
+    res.json(data)
+})
+
+
 //Middleware for server errors
 app.use(serverError);
 
