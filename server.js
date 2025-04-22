@@ -6,13 +6,30 @@ const MoviesRouter = require('./routes/movies.js');
 const serverError = require('./middleware/ServerError.js');
 const notFound = require('./middleware/notFound.js');
 
+//Auth dependencies
+const session = require('express-session');
+const passport = require('passport');
+const initializePassport = require('./auth/passport-config.js');
+
+// Initialize passport
+initializePassport(passport);
+
+//Initialize session
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your_secret_key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false },
+}))
+
+
 
 // Middleware 
-
 // cors middleware
 app.use(cors(
     {
         origin: process.env.FRONT_URL || 'http://localhost:5173',
+        credentials: true,
     }
 ));
 
