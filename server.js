@@ -58,22 +58,13 @@ app.use('/api/v1/movies', MoviesRouter);
 
 
 // Authentication routes
-app.post('/register', (req, res)=>{
-
-    //get the data from the body
-    const data = req.body;
-    console.log(data);
-
-    res.json(data, 'Registering ...')
+app.post('/register', passport.authenticate('register'),(req, res)=>{
+    return res.json({message: 'User registered successfully', user: req.user});
 })
 
-app.post('/login', (req, res) => {
-
-    //get the data from the body
-    const data = req.body;
-    console.log(data, 'Logging in ...');
-
-    res.json(data)
+app.post('/login', passport.authenticate('login'), (req, res) => {
+    return res.json({ message: 'User Logged in successfully', user: req.user });
+ 
 })
 
 
