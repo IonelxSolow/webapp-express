@@ -2,7 +2,7 @@
 const connection = require('../database/db.js');
 
 
-
+// Index route for movies
 function index(req, res) {
     //add sql query to get all books
     const sql = 'SELECT * FROM movies'
@@ -22,7 +22,7 @@ function index(req, res) {
 }
 
 
-
+// Show route for single movie
 function show(req, res) {
 
     // take the id from the params
@@ -80,10 +80,31 @@ function storeReview(req, res) {
 }
 
 
+ function create(req, res) {
+
+    console.log(req.body, req.file);
+    //Get the data from the request
+
+    const {title, director, genre, release_year, abstract} = req.body;
+    const image = req.file.filename; 
+
+    //prepare the sql query to insert the movie
+    const sql ='INSERT INTO movies (title, director, genre, release_year, abstract, image) VALUES (?, ?, ?, ?, ?, ?)'
+    const values = [title, director, genre, release_year, abstract, image]
+
+    connection.query(sql, values, (err, results) => {
+        if (err) return res.status(500).json({ success: false, error: err.message })
+         
+        console.log(results);
+        return res.status(201).json({ success: true, message: 'Movie added successfully', movieId: results.insertId })
+    }) 
+}
+
 module.exports = {
     index,
     show,
-    storeReview
+    storeReview,
+    create
 }
 
 
